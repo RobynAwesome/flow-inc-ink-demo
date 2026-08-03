@@ -1,5 +1,7 @@
 const dialog=document.getElementById('bookingDialog');
 const service=document.getElementById('serviceSelect');
+const serviceLinks=document.querySelectorAll('.service-list a');
+serviceLinks.forEach(link=>{link.style.display='flex';link.style.justifyContent='space-between';link.style.width='100%';link.style.padding='20px 0';link.style.borderBottom='1px solid #bbb';link.style.textTransform='uppercase';link.style.letterSpacing='.08em'});
 document.querySelectorAll('[data-open-booking]').forEach(b=>b.addEventListener('click',()=>dialog?.showModal()));
 document.querySelectorAll('[data-service]').forEach(b=>b.addEventListener('click',()=>{if(service)service.value=b.dataset.service;if(dialog)dialog.showModal()}));
 const menu=document.querySelector('.menu-btn');
