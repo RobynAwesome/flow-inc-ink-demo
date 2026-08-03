@@ -1,0 +1,1 @@
+{"name":"flow-inc-ink-demo","version":"3.0.0","private":true,"scripts":{"start":"npx serve .","check":"node --check app.js"}}
