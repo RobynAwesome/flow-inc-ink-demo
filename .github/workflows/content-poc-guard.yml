@@ -1,0 +1,31 @@
+name: Content POC approval guard
+
+on:
+  pull_request:
+    paths:
+      - 'blog.html'
+      - 'blog/**'
+      - 'events.html'
+      - 'tours-events.html'
+      - 'services.html'
+      - 'app.js'
+      - 'motion-system.js'
+      - 'vercel.json'
+      - 'content-approvals.json'
+      - 'scripts/content-guard.mjs'
+  push:
+    branches:
+      - 'audit/**'
+
+permissions:
+  contents: read
+
+jobs:
+  guard:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node scripts/content-guard.mjs
