@@ -1,0 +1,56 @@
+name: Realism-first POC and motion audit
+
+on:
+  pull_request:
+    paths:
+      - '**.html'
+      - '**.css'
+      - '**.js'
+      - '**.mjs'
+      - 'manifest.webmanifest'
+      - 'vercel.json'
+      - '.github/workflows/realism-motion-audit.yml'
+  push:
+    branches:
+      - 'audit/**'
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate JavaScript syntax
+        run: |
+          node --check app.js
+          node --check motion-system.js
+          node --check experience-system.js
+          node --check sw.js
+          node --check scripts/static-audit.mjs
+      - name: Validate JSON configuration
+        run: |
+          node -e "JSON.parse(require('fs').readFileSync('manifest.webmanifest','utf8')); console.log('manifest valid')"
+          node -e "JSON.parse(require('fs').readFileSync('vercel.json','utf8')); console.log('vercel config valid')"
+      - name: Run static POC audit
+        run: node scripts/static-audit.mjs
+      - name: Verify realism boundaries
+        run: |
+          grep -q "Educational POC" motion-system.js
+          grep -q "Email automation is not active yet" app.js
+          grep -q "noindex, nofollow" vercel.json
+          grep -q "prefers-reduced-motion" motion.css
+          grep -q "saveData" experience-system.js
+          grep -q "flow-lightbox" experience-system.js
+      - name: Enforce dependency restraint
+        run: |
+          node - <<'NODE'
+          const pkg=require('./package.json');
+          const count=Object.keys(pkg.dependencies||{}).length+Object.keys(pkg.devDependencies||{}).length;
+          if(count>2) throw new Error(`Dependency budget exceeded: ${count}`);
+          console.log(`Dependency budget valid: ${count}`);
+          NODE

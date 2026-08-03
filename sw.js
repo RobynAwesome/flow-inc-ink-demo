@@ -1,1 +1,30 @@
-const CACHE='flow-inc-multipage-v4';const ASSETS=['/','/index.html','/services.html','/about.html','/events.html','/contact.html','/styles.css','/app.js','/manifest.webmanifest','/icon.svg','/assets/logo.svg','/assets/hero.svg','/assets/shop-front.svg'];self.addEventListener('install',e=>e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS))));self.addEventListener('activate',e=>e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k))))));self.addEventListener('fetch',e=>{if(e.request.method!=='GET')return;e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request).then(resp=>{const copy=resp.clone();caches.open(CACHE).then(c=>c.put(e.request,copy));return resp}).catch(()=>caches.match('/index.html'))))});
+const CACHE='flow-inc-runtime-v7';
+const PRECACHE=[
+  '/','/index.html','/services.html','/about.html','/tours-events.html','/events.html','/contact.html','/blog.html',
+  '/blog/tattoo-aftercare-basics.html','/blog/sanitary-practices-you-should-expect.html','/blog/why-sobriety-matters-before-ink-or-piercing.html',
+  '/styles.css','/app.js','/motion.css','/motion-system.js','/experience.css','/experience-system.js','/manifest.webmanifest','/icon.svg','/assets/logo.svg','/assets/hero.svg','/assets/shop-front.svg'
+];
+self.addEventListener('install',event=>event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(PRECACHE)).then(()=>self.skipWaiting())));
+self.addEventListener('activate',event=>event.waitUntil(Promise.all([
+  caches.keys().then(keys=>Promise.all(keys.filter(key=>key!==CACHE).map(key=>caches.delete(key)))),
+  self.clients.claim()
+])));
+async function networkFirst(request){
+  const cache=await caches.open(CACHE);
+  try{const response=await fetch(request);if(response.ok)cache.put(request,response.clone());return response}
+  catch{const cached=await cache.match(request);return cached||cache.match('/index.html')}
+}
+async function staleWhileRevalidate(request){
+  const cache=await caches.open(CACHE);
+  const cached=await cache.match(request);
+  const update=fetch(request).then(response=>{if(response.ok)cache.put(request,response.clone());return response}).catch(()=>null);
+  return cached||update||Response.error()
+}
+self.addEventListener('fetch',event=>{
+  const request=event.request;
+  if(request.method!=='GET')return;
+  const url=new URL(request.url);
+  if(url.origin!==self.location.origin)return;
+  if(request.mode==='navigate'){event.respondWith(networkFirst(request));return}
+  event.respondWith(staleWhileRevalidate(request));
+});
