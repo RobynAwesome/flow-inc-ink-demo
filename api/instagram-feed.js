@@ -21,7 +21,7 @@ async function getComments(base,version,mediaId,token){
   return(json.data||[]).map(publicComment).filter(Boolean).slice(0,2);
 }
 
-export default async function handler(request,response){
+module.exports=async function handler(request,response){
   response.setHeader('Cache-Control','s-maxage=300, stale-while-revalidate=3600');
   const account=String(request.query.account||'flow').toLowerCase();
   const envNames=ACCOUNT_ENV[account];
@@ -43,4 +43,4 @@ export default async function handler(request,response){
     })));
     return response.status(200).json({configured:true,state:'live',account,commentsPublic:process.env.PUBLIC_IG_COMMENTS==='true',media});
   }catch(error){console.error('[Instagram API]',error);return response.status(502).json({configured:true,state:'meta-request-error',account,media:[]})}
-}
+};
