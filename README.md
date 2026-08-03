@@ -1,17 +1,25 @@
-# Flow Inc Ink — Multipage POC v3
+# Flow Inc Ink
 
-Client-approved home flow retained and expanded into a five-page information architecture:
+Production-ready multipage website for Flow Inc Ink Tattoos & Body Piercings Studio, Shop M3A at Boulders Shopping Centre, Midrand.
 
-- `index.html` — Home and latest work
-- `services.html` — Tattoos top section, piercings bottom section, educational labelled gallery and supplied price guide
-- `about.html` — Company/corporate hub for collaborators, financiers, event managers, artists and media
-- `events.html` — Tours, country presence, upcoming announcements, visual archive and event formats
-- `contact.html` — Contact details, clickable storefront, embedded Google Map and structured enquiry flow
+## Pages
 
-## Source-grounded pricing
+- Home
+- Services: tattoos, piercings, educational placement gallery and supplied price guide
+- About: company, culture, founder, team and corporate collaboration hub
+- Tours / Events: verified regional presence, upcoming announcements and event proposals
+- Contact: embedded Google Map, directions and booking actions
 
-The website reproduces the supplied Flow Inc Ink Piercing & Tattoo Price List. Final prices remain subject to studio confirmation.
+## Run locally
 
-## Deployment
+```bash
+python3 -m http.server 8000
+```
 
-Static, dependency-free and Vercel-ready. `main` remains the intended production branch.
+Open `http://localhost:8000`.
+
+## Production
+
+Vercel project: `flow-inc-ink-demo`
+
+Stable URL: `https://flow-inc-ink-demo.vercel.app`
