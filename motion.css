@@ -1,0 +1,26 @@
+@view-transition{navigation:auto}
+:root{--motion-ease:cubic-bezier(.22,1,.36,1);--motion-fast:180ms;--motion-medium:520ms;--pointer-x:50vw;--pointer-y:38vh}
+html{scroll-behavior:smooth}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;background:radial-gradient(520px circle at var(--pointer-x) var(--pointer-y),rgba(215,255,54,.065),transparent 64%);opacity:0;transition:opacity var(--motion-medium) var(--motion-ease)}
+html[data-motion-tier="full"] body::before{opacity:1}
+.site-header,main,footer,.floating-whatsapp,.booking-dialog{position:relative;z-index:1}
+main>section:not(.hero):not(.page-hero):not(.contact-page-hero),footer{content-visibility:auto;contain-intrinsic-size:800px}
+[data-motion-reveal]{will-change:transform,opacity}
+.gallery-item,.blog-card,.feature-grid article,.hub-grid article,.experience article,.review-grid blockquote,.price-card,.labelled-photo,.archive-grid figure,.contact-info-grid article{transform:translateZ(0);transition:transform var(--motion-medium) var(--motion-ease),box-shadow var(--motion-medium) var(--motion-ease),border-color var(--motion-fast) ease}
+.gallery-item:hover,.blog-card:hover,.feature-grid article:hover,.hub-grid article:hover,.experience article:hover,.price-card:hover,.contact-info-grid article:hover{transform:translate3d(0,-6px,0);box-shadow:0 22px 48px rgba(0,0,0,.22)}
+.gallery-item img,.image-strip img,.labelled-photo img,.archive-grid img,.shop-photo img,.contact-hero-image img{transition:transform 700ms var(--motion-ease),opacity 320ms ease;transform:scale(1.001) translateZ(0)}
+.gallery-item:hover img,.image-strip figure:hover img,.labelled-photo:hover img,.archive-grid figure:hover img,.shop-photo:hover img,.contact-hero-image:hover img{transform:scale(1.045) translateZ(0)}
+.outline-btn,.solid-btn,.outline-dark,.outline-light,.floating-whatsapp,.desktop-nav a,.text-link,.blog-card-footer a{transform:translateZ(0);transition:transform var(--motion-fast) var(--motion-ease),background-color var(--motion-fast) ease,color var(--motion-fast) ease,border-color var(--motion-fast) ease,opacity var(--motion-fast) ease}
+.outline-btn:hover,.solid-btn:hover,.outline-dark:hover,.outline-light:hover,.floating-whatsapp:hover{transform:translate3d(0,-2px,0) scale(1.015)}
+.outline-btn:active,.solid-btn:active,.outline-dark:active,.outline-light:active,.floating-whatsapp:active{transform:scale(.975)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:4px}
+.poc-disclosure{margin:76px 0 0;padding:11px 4vw;border-bottom:1px solid rgba(215,255,54,.28);background:linear-gradient(90deg,rgba(215,255,54,.14),rgba(215,255,54,.035));color:#e9ffc1;font-size:11px;letter-spacing:.07em;line-height:1.55}
+.poc-disclosure strong{text-transform:uppercase;letter-spacing:.13em;color:var(--accent)}
+html[data-motion-tier="soft"] body::before,html[data-motion-tier="reduced"] body::before{display:none}
+html[data-motion-tier="soft"] .gallery-item:hover,html[data-motion-tier="soft"] .blog-card:hover{transform:translate3d(0,-3px,0)}
+::view-transition-old(root){animation:flow-out 220ms ease both}
+::view-transition-new(root){animation:flow-in 420ms var(--motion-ease) both}
+@keyframes flow-out{to{opacity:0;transform:scale(.992)}}
+@keyframes flow-in{from{opacity:0;transform:translateY(10px) scale(1.008)}}
+@media(max-width:760px){body::before{display:none}.gallery-item:hover,.blog-card:hover,.feature-grid article:hover,.hub-grid article:hover,.experience article:hover,.price-card:hover,.contact-info-grid article:hover{transform:none;box-shadow:none}}
+@media(prefers-reduced-motion:reduce){@view-transition{navigation:none}*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}.gallery-item:hover img,.image-strip figure:hover img,.labelled-photo:hover img,.archive-grid figure:hover img,.shop-photo:hover img,.contact-hero-image:hover img{transform:none}.poc-disclosure{scroll-margin-top:90px}}
