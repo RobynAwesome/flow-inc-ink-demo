@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "siteStatus": "poc-preview",
   "home": {
     "clientApproved": true,
@@ -26,7 +26,23 @@
   "contact": {
     "googleMapsLinkImplemented": true,
     "embeddedMapImplemented": true,
+    "leafletInteractiveMapImplemented": true,
+    "mapCoordinatesEvidence": "Boulders Shopping Centre public location reference",
     "formDelivery": "whatsapp-user-confirmed-send"
+  },
+  "social": {
+    "profileLinksProvidedByClient": true,
+    "studioInstagram": "@flow_inc_ink",
+    "founderInstagram": "@snow_ink_flow",
+    "artistInstagram": "@inkboy_que_backup",
+    "instagramProfessionalAccountsAuthorised": false,
+    "liveInstagramMediaActive": false,
+    "publicInstagramCommentsActive": false,
+    "facebookPageIdentityProvided": false,
+    "facebookPageAuthorised": false,
+    "liveFacebookFeedActive": false,
+    "whatsappClickToChatActive": true,
+    "whatsappCloudApiActive": false
   },
   "experience": {
     "motionImplementation": "progressive-enhancement-poc",

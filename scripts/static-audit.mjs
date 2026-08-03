@@ -4,7 +4,7 @@ import path from 'node:path';
 const root=process.cwd();
 const errors=[];
 const warnings=[];
-const required=['index.html','services.html','about.html','tours-events.html','contact.html','blog.html','app.js','styles.css','motion-system.js','motion.css','sw.js','manifest.webmanifest','vercel.json'];
+const required=['index.html','services.html','about.html','tours-events.html','contact.html','blog.html','app.js','styles.css','motion-system.js','motion.css','experience-system.js','experience.css','social-map-system.js','social-map.css','map-system.js','social-feed-system.js','api/instagram-feed.js','api/facebook-feed.js','sw.js','manifest.webmanifest','vercel.json','content-approvals.json'];
 
 async function exists(file){try{await stat(path.join(root,file));return true}catch{return false}}
 async function walk(dir='.'){
@@ -45,14 +45,23 @@ for(const file of htmlFiles){
 const app=await readFile(path.join(root,'app.js'),'utf8');
 if(!app.includes('checkValidity()')||!app.includes('reportValidity()'))errors.push('Forms do not enforce browser validity before opening WhatsApp.');
 if(!app.includes("import('/motion-system.js')"))errors.push('Adaptive motion runtime is not loaded.');
+if(!app.includes("import('/social-map-system.js')"))errors.push('Social and map runtime is not loaded.');
 const motionCss=await readFile(path.join(root,'motion.css'),'utf8');
 if(!motionCss.includes('prefers-reduced-motion'))errors.push('Motion does not respect reduced-motion preferences.');
+const socialMap=await readFile(path.join(root,'social-map-system.js'),'utf8');
+if(!socialMap.includes('@flow_inc_ink')||!socialMap.includes('@snow_ink_flow')||!socialMap.includes('@inkboy_que_backup'))errors.push('Client-provided Instagram profiles are not represented in the social hub.');
+if(!socialMap.includes('data-flow-map'))errors.push('Interactive map mount is missing.');
 const worker=await readFile(path.join(root,'sw.js'),'utf8');
 if(!worker.includes("request.mode==='navigate'"))errors.push('Service worker does not use a navigation-specific strategy.');
 if(!worker.includes('url.origin!==self.location.origin'))errors.push('Service worker may intercept cross-origin requests.');
+if(!worker.includes("url.pathname.startsWith('/api/')"))errors.push('Service worker may cache live social API responses.');
 const vercel=JSON.parse(await readFile(path.join(root,'vercel.json'),'utf8'));
 const vercelText=JSON.stringify(vercel);
 if(!vercelText.includes('X-Robots-Tag')||!vercelText.includes('noindex'))errors.push('Draft Blog POC is indexable before studio/source approval.');
+const approvals=JSON.parse(await readFile(path.join(root,'content-approvals.json'),'utf8'));
+if(approvals.social?.liveInstagramMediaActive&&!approvals.social?.instagramProfessionalAccountsAuthorised)errors.push('Instagram feed cannot be marked live before account authorisation.');
+if(approvals.social?.publicInstagramCommentsActive&&!approvals.social?.instagramProfessionalAccountsAuthorised)errors.push('Instagram comments cannot be public before account authorisation.');
+if(approvals.social?.liveFacebookFeedActive&&!approvals.social?.facebookPageAuthorised)errors.push('Facebook feed cannot be marked live before Page authorisation.');
 
 for(const file of files.filter(file=>/\.(svg|html|css|js)$/.test(file))){
   const source=await readFile(path.join(root,file),'utf8');
