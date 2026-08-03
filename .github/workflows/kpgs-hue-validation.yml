@@ -1,0 +1,38 @@
+name: Validate KPGS HUE foundation
+
+on:
+  pull_request:
+    paths:
+      - 'kpgs/**'
+      - 'hue-lab.html'
+      - '.github/workflows/kpgs-hue-validation.yml'
+  push:
+    branches:
+      - 'kpgs/**'
+    paths:
+      - 'kpgs/**'
+      - 'hue-lab.html'
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate JavaScript syntax
+        run: |
+          node --check kpgs/protocol-parser.js
+          node --check kpgs/hue-engine.js
+          node --check kpgs/crisisconnect-adapter.js
+      - name: Validate JSON schema syntax
+        run: node -e "JSON.parse(require('fs').readFileSync('kpgs/hue-event.schema.json','utf8')); console.log('schema valid')"
+      - name: Verify POC boundaries
+        run: |
+          grep -q "FOC-risk-unverified" kpgs/hue-engine.js
+          grep -q "No verified CrisisConnect ingestion endpoint" kpgs/crisisconnect-adapter.js
+          grep -q "consent" kpgs/hue-engine.js
