@@ -1,0 +1,27 @@
+{
+  "name": "Flow Inc Ink — Tattoos, Piercings, Tours & Events",
+  "short_name": "Flow Inc Ink",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#0a0a0a",
+  "theme_color": "#0a0a0a",
+  "description": "Premium tattoos and professional piercings in Midrand.",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Book appointment",
+      "url": "/?book=1"
+    },
+    {
+      "name": "Aftercare",
+      "url": "/#services"
+    }
+  ]
+}
