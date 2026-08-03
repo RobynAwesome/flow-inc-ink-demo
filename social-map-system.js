@@ -22,20 +22,23 @@ const mapMarkup=`
   <div class="map-panel"><span class="section-kicker">Interactive studio map</span><h2>Zoom in.<br>Find the flow.</h2><p>Flow Inc Ink is at Shop M3A, Boulders Shopping Centre, 1685 Old Pretoria Road, Halfway House Estate, Midrand, Gauteng.</p><div class="map-toolbar"><button class="primary" type="button" data-map-command="studio">Centre studio</button><button type="button" data-map-command="zoom-in" aria-label="Zoom map in">Zoom +</button><button type="button" data-map-command="zoom-out" aria-label="Zoom map out">Zoom −</button><a href="https://www.google.com/maps/search/?api=1&query=Flow%20Inc%20Ink%2C%20Shop%20M3A%2C%20Boulders%20Shopping%20Centre%2C%20Midrand%2C%20Gauteng" target="_blank" rel="noopener noreferrer">Google Maps directions ↗</a></div></div>
 </div>`;
 
+const homePaths=['/','/index','/index.html'];
+const contactPaths=['/contact','/contact.html'];
+
 function mountSocial(){
-  if(!['/','/index.html','/contact.html'].includes(location.pathname)||document.querySelector('#social-pulse'))return;
-  const anchor=location.pathname==='/contact.html'?document.querySelector('.contact-details'):document.querySelector('.contact');
+  if(![...homePaths,...contactPaths].includes(location.pathname)||document.querySelector('#social-pulse'))return;
+  const anchor=contactPaths.includes(location.pathname)?document.querySelector('.contact-details'):document.querySelector('.contact');
   if(anchor)anchor.insertAdjacentHTML('beforebegin',socialMarkup);
 }
 
 function mountMap(){
   if(document.querySelector('[data-flow-map]'))return;
-  if(location.pathname==='/contact.html'){
+  if(contactPaths.includes(location.pathname)){
     const section=document.querySelector('.map-section');
     if(section){section.className='live-map-section';section.innerHTML=mapMarkup}
     return;
   }
-  if(location.pathname==='/'||location.pathname==='/index.html'){
+  if(homePaths.includes(location.pathname)){
     const contact=document.querySelector('.contact');
     if(contact)contact.insertAdjacentHTML('beforebegin',`<section class="live-map-section" aria-label="Flow Inc Ink location">${mapMarkup}</section>`);
   }
