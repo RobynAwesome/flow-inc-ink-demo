@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "siteStatus": "poc-preview",
+  "home": {
+    "clientApproved": true,
+    "preserveInformationArchitecture": true
+  },
+  "blog": {
+    "publicationStatus": "draft-poc",
+    "studioAuthorshipApproved": false,
+    "healthContentReviewed": false,
+    "legalComplianceReviewed": false,
+    "publicationDatesApproved": false,
+    "emailAutomationActive": false
+  },
+  "tours": {
+    "publicationStatus": "evidence-pending",
+    "countriesApproved": false,
+    "datesApproved": false,
+    "photographsApproved": false
+  },
+  "services": {
+    "pricingApprovedForPublicDisplay": false,
+    "piercingLabelsReviewedByStudio": false
+  },
+  "contact": {
+    "googleMapsLinkImplemented": true,
+    "embeddedMapImplemented": true,
+    "formDelivery": "whatsapp-user-confirmed-send"
+  },
+  "experience": {
+    "motionImplementation": "progressive-enhancement-poc",
+    "reducedMotionSupported": true,
+    "saveDataSupported": true,
+    "productionPerformanceVerified": false
+  }
+}
