@@ -1,7 +1,9 @@
 {
   "name": "Flow Inc Ink — Tattoos, Piercings, Tours & Events",
   "short_name": "Flow Inc Ink",
+  "id": "/",
   "start_url": "/index.html",
+  "scope": "/",
   "display": "standalone",
   "background_color": "#0a0a0a",
   "theme_color": "#0a0a0a",
@@ -17,11 +19,23 @@
   "shortcuts": [
     {
       "name": "Book appointment",
-      "url": "/?book=1"
+      "short_name": "Book",
+      "url": "/index.html?book=1"
     },
     {
-      "name": "Aftercare",
-      "url": "/#services"
+      "name": "Services and aftercare",
+      "short_name": "Services",
+      "url": "/services.html#aftercare"
+    },
+    {
+      "name": "Studio directions",
+      "short_name": "Directions",
+      "url": "/contact.html"
+    },
+    {
+      "name": "Education blog",
+      "short_name": "Blog",
+      "url": "/blog.html"
     }
   ]
 }
