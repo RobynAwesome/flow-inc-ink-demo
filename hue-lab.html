@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>HUE Engine Lab — Flow Inc Ink</title>
+  <style>
+    :root{color-scheme:dark;--ink:#0b0b0b;--paper:#f1efe8;--accent:#d7ff36}*{box-sizing:border-box}body{margin:0;background:var(--ink);color:#fff;font:16px/1.6 Inter,system-ui,sans-serif}.shell{width:min(1100px,92vw);margin:auto;padding:48px 0 80px}.mark{font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent)}h1{font-size:clamp(48px,8vw,104px);line-height:.9;margin:18px 0 28px;text-transform:uppercase}.grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}.panel{border:1px solid #333;padding:24px;background:#111}.panel h2{margin-top:0}textarea{width:100%;min-height:260px;background:#050505;color:#fff;border:1px solid #444;padding:16px;font:inherit}label{display:flex;gap:10px;align-items:center;margin:18px 0}button{border:0;background:var(--accent);color:#111;padding:14px 20px;font-weight:800;cursor:pointer}pre{white-space:pre-wrap;word-break:break-word;min-height:390px;margin:0;font-size:12px}.note{color:#aaa;font-size:13px}.status{margin-top:12px;color:var(--accent)}@media(max-width:760px){.grid{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <p class="mark">KPGS · APWA · Human Understanding Engine</p>
+    <h1>HUE Engine Lab</h1>
+    <p class="note">A local, consent-gated proof of concept. It reads Prompting Protocol, Bracket Protocol, Emoji Protocol and ordinary English, then produces a KPCB+ event envelope. No event is transmitted to CrisisConnect because no verified ingestion endpoint is configured.</p>
+    <section class="grid">
+      <div class="panel">
+        <h2>Human input</h2>
+        <textarea id="input">#PP 1: [adaptive progressive web app] {Human Understanding Engine} &lt;HUE Engine&gt; 💜✝️🪻 We cool, but we care and are compliant. Help a customer report an unsafe or unsanitary studio without exposing personal information.</textarea>
+        <label><input id="consent" type="checkbox"> Allow local persistence on this device</label>
+        <button id="interpret">Interpret through KC</button>
+        <p id="status" class="status" aria-live="polite"></p>
+      </div>
+      <div class="panel">
+        <h2>KPCB+ envelope</h2>
+        <pre id="output">Select “Interpret through KC”.</pre>
+      </div>
+    </section>
+  </main>
+  <script type="module">
+    import { HUEEngine } from './kpgs/hue-engine.js';
+    import { CrisisConnectAdapter } from './kpgs/crisisconnect-adapter.js';
+
+    const engine = new HUEEngine();
+    const adapter = new CrisisConnectAdapter({ enabled: false });
+    const input = document.querySelector('#input');
+    const output = document.querySelector('#output');
+    const consent = document.querySelector('#consent');
+    const status = document.querySelector('#status');
+
+    document.querySelector('#interpret').addEventListener('click', async () => {
+      const envelope = engine.interpret(input.value, {
+        eventType: 'safety-education-intent',
+        retainRaw: true,
+        context: {
+          page: location.pathname,
+          sessionId: sessionStorage.getItem('hue-session') || 'browser-poc',
+          consent: consent.checked,
+          device: navigator.userAgentData?.mobile ? 'mobile' : 'browser'
+        },
+        claims: [
+          { id: 'client-request', statement: 'Client requested a protocol-aware APWA/HUE implementation.' },
+          { id: 'production-api', statement: 'A live CrisisConnect ingestion API is connected.' }
+        ],
+        evidence: [{ claimId: 'client-request', source: 'conversation prompt' }]
+      });
+      output.textContent = JSON.stringify(envelope, null, 2);
+      const result = await adapter.submit(envelope, { consent: consent.checked });
+      status.textContent = `${result.state}: ${result.reason || 'processed'}`;
+    });
+  </script>
+</body>
+</html>
