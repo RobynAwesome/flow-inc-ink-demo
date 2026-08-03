@@ -3,6 +3,36 @@ const service=document.getElementById('serviceSelect');
 const serviceLinks=document.querySelectorAll('.service-list a');
 serviceLinks.forEach(link=>{link.style.display='flex';link.style.justifyContent='space-between';link.style.width='100%';link.style.padding='20px 0';link.style.borderBottom='1px solid #bbb';link.style.textTransform='uppercase';link.style.letterSpacing='.08em'});
 const requireValid=form=>{if(!form.checkValidity()){form.reportValidity();return false}return true};
+
+function ensurePrimaryNavigation(){
+  document.querySelectorAll('.desktop-nav').forEach(nav=>{
+    if(!nav.querySelector('a[href="/blog.html"]')){
+      const link=document.createElement('a');
+      link.href='/blog.html';
+      link.textContent='Blog';
+      nav.append(link);
+    }
+  });
+}
+
+function enforceTruthfulUpdateCopy(){
+  const blogForm=document.getElementById('blogSubscribeForm');
+  if(blogForm){
+    const button=blogForm.querySelector('button[type="submit"]');
+    if(button)button.textContent='Request updates';
+    const helper=document.getElementById('blogSubscribeMessage');
+    if(helper)helper.textContent='Email automation is not active yet. This form opens WhatsApp so the studio can record your request.';
+  }
+  const tourForm=document.getElementById('notifyForm');
+  if(tourForm){
+    const button=tourForm.querySelector('button[type="submit"]');
+    if(button)button.textContent='Request updates';
+  }
+}
+
+ensurePrimaryNavigation();
+enforceTruthfulUpdateCopy();
+
 document.querySelectorAll('[data-open-booking]').forEach(control=>control.addEventListener('click',event=>{event.preventDefault();dialog?.showModal()}));
 document.querySelectorAll('[data-service]').forEach(control=>control.addEventListener('click',event=>{event.preventDefault();if(service)service.value=control.dataset.service;if(dialog)dialog.showModal()}));
 const menu=document.querySelector('.menu-btn');
@@ -12,7 +42,7 @@ document.querySelectorAll('[data-filter]').forEach(button=>button.addEventListen
 const bookingForm=document.getElementById('bookingForm');
 bookingForm?.addEventListener('submit',event=>{event.preventDefault();if(!requireValid(event.currentTarget))return;const data=new FormData(event.currentTarget);const message=`Hi Flow Inc Ink, I'd like to make an enquiry.%0A%0AService: ${encodeURIComponent(data.get('service'))}%0AArtist: ${encodeURIComponent(data.get('artist'))}%0AName: ${encodeURIComponent(data.get('name'))}%0APhone: ${encodeURIComponent(data.get('phone'))}%0AEmail: ${encodeURIComponent(data.get('email'))}%0ADetails: ${encodeURIComponent(data.get('brief'))}`;window.open(`https://wa.me/27606184165?text=${message}`,'_blank','noopener,noreferrer');dialog?.close()});
 const notifyForm=document.getElementById('notifyForm');
-notifyForm?.addEventListener('submit',event=>{event.preventDefault();if(!requireValid(event.currentTarget))return;const email=event.currentTarget.querySelector('input')?.value||'';const message=`Hi Flow Inc Ink, please add me to tour and event updates.%0AEmail: ${encodeURIComponent(email)}`;const status=document.getElementById('notifyMessage');if(status)status.textContent='Opening WhatsApp. Your details are sent only if you choose to send the prepared message.';window.open(`https://wa.me/27606184165?text=${message}`,'_blank','noopener,noreferrer');event.currentTarget.reset()});
+notifyForm?.addEventListener('submit',event=>{event.preventDefault();if(!requireValid(event.currentTarget))return;const email=event.currentTarget.querySelector('input')?.value||'';const message=`Hi Flow Inc Ink, please record my request for future tour and event updates.%0AEmail: ${encodeURIComponent(email)}`;const status=document.getElementById('notifyMessage');if(status)status.textContent='Opening WhatsApp. Your details are sent only if you choose to send the prepared message.';window.open(`https://wa.me/27606184165?text=${message}`,'_blank','noopener,noreferrer');event.currentTarget.reset()});
 const blogSubscribeForm=document.getElementById('blogSubscribeForm');
 blogSubscribeForm?.addEventListener('submit',event=>{event.preventDefault();if(!requireValid(event.currentTarget))return;const email=event.currentTarget.querySelector('input')?.value||'';const message=`Hi Flow Inc Ink, please record my request for future blog email updates.%0AEmail: ${encodeURIComponent(email)}`;const status=document.getElementById('blogSubscribeMessage');if(status)status.textContent='Email automation is not active yet. Opening WhatsApp so the studio can record your request if you choose to send it.';window.open(`https://wa.me/27606184165?text=${message}`,'_blank','noopener,noreferrer');event.currentTarget.reset()});
 const contactForm=document.getElementById('contactForm');

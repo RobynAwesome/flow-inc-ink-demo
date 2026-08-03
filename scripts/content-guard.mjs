@@ -7,7 +7,10 @@ const app=await read('app.js');
 const motion=await read('motion-system.js');
 const errors=[];
 
-if(approvals.siteStatus!=='poc-preview')errors.push('Site status must remain poc-preview until production evidence is recorded.');
+const allowedSiteStates=new Set(['poc-preview','client-facing-poc']);
+if(!allowedSiteStates.has(approvals.siteStatus)){
+  errors.push('Site status must remain an explicit POC state until production evidence is recorded.');
+}
 
 if(approvals.blog.publicationStatus!=='published'){
   if(!vercel.includes('noindex, nofollow'))errors.push('Draft Blog must remain noindex.');
@@ -26,8 +29,24 @@ if(!approvals.tours.countriesApproved&&!motion.includes('Tour locations, dates, 
   errors.push('Tour claims require an evidence boundary until countries are approved.');
 }
 
+if(approvals.tours.locationSpecificTourPhotographsCommitted&& !approvals.tours.photographsApproved){
+  errors.push('Tour photographs cannot be treated as approved before client approval is recorded.');
+}
+
+if(approvals.blog.emailAutomationActive&&(!approvals.blog.subscriberDatabaseImplemented||!approvals.blog.periodicPublishingWorkflowImplemented)){
+  errors.push('Email automation cannot be marked active without subscriber storage and a publishing workflow.');
+}
+
+if(approvals.blog.seoPublicationActive&&approvals.blog.publicationStatus!=='published'){
+  errors.push('SEO publication cannot be active while the Blog remains draft POC.');
+}
+
 if(approvals.experience.productionPerformanceVerified){
   errors.push('productionPerformanceVerified cannot be true until measured production evidence is committed.');
+}
+
+if(approvals.experience.latestVercelCommitVerified&&!approvals.experience.productionPerformanceVerified){
+  console.warn('WARN: Vercel commit verification does not by itself prove production performance.');
 }
 
 if(errors.length){

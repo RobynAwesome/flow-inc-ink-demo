@@ -1,34 +1,58 @@
 {
-  "schemaVersion": 2,
-  "siteStatus": "poc-preview",
+  "schemaVersion": 3,
+  "siteStatus": "client-facing-poc",
   "home": {
     "clientApproved": true,
     "preserveInformationArchitecture": true
   },
-  "blog": {
-    "publicationStatus": "draft-poc",
-    "studioAuthorshipApproved": false,
-    "healthContentReviewed": false,
-    "legalComplianceReviewed": false,
-    "publicationDatesApproved": false,
-    "emailAutomationActive": false
-  },
-  "tours": {
-    "publicationStatus": "evidence-pending",
-    "countriesApproved": false,
-    "datesApproved": false,
-    "photographsApproved": false
-  },
   "services": {
+    "dedicatedPageImplemented": true,
+    "tattoosBeforePiercings": true,
+    "educationalPiercingGalleryImplemented": true,
     "pricingApprovedForPublicDisplay": false,
     "piercingLabelsReviewedByStudio": false
   },
+  "about": {
+    "corporateHubImplemented": true,
+    "visionMissionCultureImplemented": true,
+    "collaboratorFinancierEventPathwaysImplemented": true,
+    "companyFactsApprovedByClient": false,
+    "artistProfilesApprovedByClient": false
+  },
+  "tours": {
+    "publicationStatus": "partial-poc",
+    "countryFlagsImplemented": true,
+    "upcomingSectionImplemented": true,
+    "eventEnquiryImplemented": true,
+    "countriesApproved": false,
+    "datesApproved": false,
+    "locationSpecificTourPhotographsCommitted": false,
+    "photographsApproved": false
+  },
   "contact": {
+    "dedicatedPageImplemented": true,
     "googleMapsLinkImplemented": true,
     "embeddedMapImplemented": true,
     "leafletInteractiveMapImplemented": true,
     "mapCoordinatesEvidence": "Boulders Shopping Centre public location reference",
+    "productionMapRuntimeVerified": false,
     "formDelivery": "whatsapp-user-confirmed-send"
+  },
+  "blog": {
+    "publicationStatus": "draft-poc",
+    "landingPageImplemented": true,
+    "aftercareArticleImplemented": true,
+    "sanitaryPracticesArticleImplemented": true,
+    "sobrietyArticleImplemented": true,
+    "tattooHistoryArticleImplemented": false,
+    "periodicPublishingWorkflowImplemented": false,
+    "subscriberDatabaseImplemented": false,
+    "emailAutomationActive": false,
+    "seoPublicationActive": false,
+    "studioAuthorshipApproved": false,
+    "healthContentReviewed": false,
+    "legalComplianceReviewed": false,
+    "publicationDatesApproved": false
   },
   "social": {
     "profileLinksProvidedByClient": true,
@@ -48,6 +72,8 @@
     "motionImplementation": "progressive-enhancement-poc",
     "reducedMotionSupported": true,
     "saveDataSupported": true,
-    "productionPerformanceVerified": false
+    "productionPerformanceVerified": false,
+    "latestVercelCommitVerified": false,
+    "dnsVerified": false
   }
 }
