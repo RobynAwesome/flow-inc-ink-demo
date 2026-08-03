@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://kopanolabs.com/schemas/hue-event.schema.json",
+  "title": "KPGS HUE Event Envelope",
+  "type": "object",
+  "required": ["kpcbVersion", "eventId", "createdAt", "app", "eventType", "kopanoContext", "vectors", "intent", "governance"],
+  "properties": {
+    "kpcbVersion": { "type": "string" },
+    "eventId": { "type": "string", "minLength": 8 },
+    "createdAt": { "type": "string", "format": "date-time" },
+    "app": { "type": "string" },
+    "engine": {
+      "type": "object",
+      "required": ["name", "version"],
+      "properties": {
+        "name": { "const": "HUE Engine" },
+        "version": { "type": "string" }
+      }
+    },
+    "eventType": { "type": "string" },
+    "kopanoContext": { "type": "object" },
+    "vectors": {
+      "type": "object",
+      "required": ["reality", "runtime", "governance"]
+    },
+    "intent": {
+      "type": "object",
+      "required": ["primary", "candidates", "confidence"],
+      "properties": {
+        "primary": { "type": "string" },
+        "candidates": { "type": "array", "items": { "type": "string" } },
+        "confidence": { "type": "number", "minimum": 0, "maximum": 1 }
+      }
+    },
+    "governance": {
+      "type": "object",
+      "required": ["consent", "persistence", "piiPolicy", "claims", "focRiskCount"]
+    }
+  },
+  "additionalProperties": true
+}
