@@ -9,10 +9,12 @@ on:
       - '**.mjs'
       - 'manifest.webmanifest'
       - 'vercel.json'
+      - 'content-approvals.json'
       - '.github/workflows/realism-motion-audit.yml'
   push:
     branches:
       - 'audit/**'
+      - 'feat/**'
 
 permissions:
   contents: read
@@ -30,12 +32,18 @@ jobs:
           node --check app.js
           node --check motion-system.js
           node --check experience-system.js
+          node --check social-map-system.js
+          node --check map-system.js
+          node --check social-feed-system.js
+          node --check api/instagram-feed.js
+          node --check api/facebook-feed.js
           node --check sw.js
           node --check scripts/static-audit.mjs
       - name: Validate JSON configuration
         run: |
           node -e "JSON.parse(require('fs').readFileSync('manifest.webmanifest','utf8')); console.log('manifest valid')"
           node -e "JSON.parse(require('fs').readFileSync('vercel.json','utf8')); console.log('vercel config valid')"
+          node -e "JSON.parse(require('fs').readFileSync('content-approvals.json','utf8')); console.log('approval state valid')"
       - name: Run static POC audit
         run: node scripts/static-audit.mjs
       - name: Verify realism boundaries
@@ -46,6 +54,11 @@ jobs:
           grep -q "prefers-reduced-motion" motion.css
           grep -q "saveData" experience-system.js
           grep -q "flow-lightbox" experience-system.js
+          grep -q "meta-authorization-required" api/instagram-feed.js
+          grep -q "verified-facebook-page-required" api/facebook-feed.js
+          grep -q "PUBLIC_IG_COMMENTS" api/instagram-feed.js
+          grep -q "data-flow-map" social-map-system.js
+          grep -q "url.pathname.startsWith('/api/')" sw.js
       - name: Enforce dependency restraint
         run: |
           node - <<'NODE'
