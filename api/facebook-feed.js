@@ -4,7 +4,7 @@ function cleanComment(comment){
   return{name:comment?.from?.name||'Facebook user',text,created_time:comment.created_time||null};
 }
 
-export default async function handler(request,response){
+module.exports=async function handler(request,response){
   response.setHeader('Cache-Control','s-maxage=300, stale-while-revalidate=3600');
   const pageId=process.env.FACEBOOK_PAGE_ID;const token=process.env.FACEBOOK_PAGE_ACCESS_TOKEN;const version=process.env.META_GRAPH_VERSION;
   if(!pageId||!token||!version)return response.status(200).json({configured:false,state:'verified-facebook-page-required',posts:[]});
@@ -19,4 +19,4 @@ export default async function handler(request,response){
     const posts=(json.data||[]).map(post=>({id:post.id,message:post.message||'',created_time:post.created_time,permalink_url:post.permalink_url,full_picture:post.full_picture||null,comments:(post.comments?.data||[]).map(cleanComment).filter(Boolean)}));
     return response.status(200).json({configured:true,state:'live',commentsPublic:process.env.PUBLIC_FACEBOOK_COMMENTS==='true',posts});
   }catch(error){console.error('[Facebook API]',error);return response.status(502).json({configured:true,state:'meta-request-error',posts:[]})}
-}
+};
