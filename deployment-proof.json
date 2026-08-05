@@ -1,0 +1,8 @@
+{
+  "project": "Flow Inc Ink",
+  "repository": "RobynAwesome/flow-inc-ink-demo",
+  "branch": "main",
+  "sourceAuditCommit": "84d3b675cf409c999cdf22671580bd4b014a9700",
+  "triggeredAt": "2026-08-06T00:43:00+02:00",
+  "purpose": "Force a Git-connected Vercel production deployment and provide an observable deployment marker."
+}
